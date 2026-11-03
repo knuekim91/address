@@ -15,6 +15,7 @@
     searchArea: $("#searchArea"),
     tabs: [...document.querySelectorAll(".tab")],
     query: $("#query"),
+    orgFilter: $("#orgFilter"),
     subjectList: $("#subjectList"),
     count: $("#count"),
     results: $("#results"),
@@ -65,6 +66,17 @@
     );
   }
 
+  function fillOrgFilter() {
+    const orgs = [...new Set(people.map((p) => p.org).filter(Boolean))];
+    const options = orgs.map((org) => {
+      const opt = document.createElement("option");
+      opt.value = org;
+      opt.textContent = org;
+      return opt;
+    });
+    els.orgFilter.replaceChildren(new Option("전체 학교·동우회", ""), ...options);
+  }
+
   function makeCard(person) {
     const card = document.createElement("article");
     card.className = "card";
@@ -107,14 +119,16 @@
 
   function render() {
     const q = els.query.value.trim();
+    const org = els.orgFilter.value;
+    const scope = org ? people.filter((p) => p.org === org) : people;
     els.results.replaceChildren();
 
     if (!q) {
-      els.count.textContent = people.length + "명이 등록되어 있습니다.";
+      els.count.textContent = scope.length + "명이 등록되어 있습니다.";
       return;
     }
 
-    const found = people.filter((p) => matches(p, mode, q));
+    const found = scope.filter((p) => matches(p, mode, q));
     els.count.textContent = "검색 결과 " + found.length + "명";
 
     if (found.length === 0) {
@@ -154,6 +168,7 @@
     }
     people = data.filter((p) => p && typeof p === "object");
     fillSubjectList();
+    fillOrgFilter();
     els.loader.hidden = true;
     els.searchArea.hidden = false;
     setMode(mode);
@@ -190,4 +205,5 @@
   });
 
   els.query.addEventListener("input", render);
+  els.orgFilter.addEventListener("change", render);
 })();
