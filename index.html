@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>교직원 주소록 검색</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="head">
+      <h1>교직원 주소록</h1>
+      <p class="sub">이름, 과목, 주소, 전화번호로 찾아보세요</p>
+    </header>
+
+    <section class="loader" id="loader">
+      <p class="loader-text">
+        데이터는 이 기기 안에서만 열리며 어디에도 올라가지 않습니다.
+      </p>
+      <div class="loader-actions">
+        <label class="btn btn-primary">
+          JSON 파일 불러오기
+          <input type="file" id="file" accept="application/json,.json" hidden>
+        </label>
+        <button class="btn" id="sampleBtn" type="button">샘플로 체험하기</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+    </section>
+
+    <section class="search" id="searchArea" hidden>
+      <nav class="tabs" role="tablist" aria-label="검색 방식">
+        <button class="tab is-active" role="tab" data-mode="name" aria-selected="true">이름</button>
+        <button class="tab" role="tab" data-mode="subject" aria-selected="false">과목</button>
+        <button class="tab" role="tab" data-mode="address" aria-selected="false">주소</button>
+        <button class="tab" role="tab" data-mode="phone" aria-selected="false">전화</button>
+      </nav>
+
+      <div class="field">
+        <input type="search" id="query" class="input" autocomplete="off" placeholder="이름을 입력하세요 (예: 홍길동)">
+        <datalist id="subjectList"></datalist>
+      </div>
+
+      <p class="count" id="count" aria-live="polite"></p>
+      <div class="results" id="results"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
