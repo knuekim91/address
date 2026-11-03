@@ -207,6 +207,76 @@ body {
   word-break: keep-all;
 }
 
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 16px 0 8px;
+}
+
+.toolbar .count {
+  margin: 0;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar-actions .btn,
+.card-edit {
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.editor {
+  width: min(480px, calc(100% - 32px));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  color: var(--ink);
+  padding: 24px;
+}
+
+.editor::backdrop {
+  background: rgba(10, 14, 26, 0.45);
+}
+
+.editor h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.editor label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--sub);
+}
+
+.editor .input {
+  margin-top: 4px;
+  font-size: 15px;
+  padding: 10px 14px;
+  box-shadow: none;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
 .empty {
   grid-column: 1 / -1;
   text-align: center;

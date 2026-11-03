@@ -42,10 +42,34 @@
         <datalist id="orgList"></datalist>
       </div>
 
-      <p class="count" id="count" aria-live="polite"></p>
+      <div class="toolbar">
+        <p class="count" id="count" aria-live="polite"></p>
+        <div class="toolbar-actions">
+          <button class="btn" id="addBtn" type="button">+ 추가</button>
+          <button class="btn" id="exportBtn" type="button">JSON 내려받기</button>
+        </div>
+      </div>
       <div class="results" id="results"></div>
     </section>
   </main>
+
+  <dialog id="editor" class="editor">
+    <form method="dialog" id="editorForm">
+      <h2 id="editorTitle">정보 수정</h2>
+      <label>학교·동우회 <input name="org" class="input" list="orgList"></label>
+      <label>직위 <input name="role" class="input"></label>
+      <label>이름 <input name="name" class="input" required></label>
+      <label>과목 <input name="subject" class="input" list="subjectList"></label>
+      <label>전화 <input name="phone" class="input" inputmode="tel"></label>
+      <label>휴대전화 <input name="mobile" class="input" inputmode="tel"></label>
+      <label>주소 <input name="address" class="input"></label>
+      <label>우편번호 <input name="zip" class="input" inputmode="numeric"></label>
+      <div class="editor-actions">
+        <button class="btn" value="cancel" type="submit">취소</button>
+        <button class="btn btn-primary" value="save" type="submit">저장</button>
+      </div>
+    </form>
+  </dialog>
 
   <script src="app.js"></script>
 </body>

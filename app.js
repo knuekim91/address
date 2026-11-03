@@ -84,15 +84,26 @@
     const card = document.createElement("article");
     card.className = "card";
 
+    const head = document.createElement("div");
+    head.className = "card-head";
+
     const name = document.createElement("div");
     name.className = "card-name";
     name.textContent = person.name || "(이름 없음)";
+
+    const edit = document.createElement("button");
+    edit.className = "btn card-edit";
+    edit.type = "button";
+    edit.textContent = "수정";
+    edit.addEventListener("click", () => openEditor(person));
+
+    head.append(name, edit);
 
     const role = document.createElement("div");
     role.className = "card-role";
     role.textContent = [person.org, person.role, person.subject].filter(Boolean).join(" · ");
 
-    card.append(name, role);
+    card.append(head, role);
 
     const phoneText = person.mobile || person.phone;
     if (phoneText) {
@@ -206,5 +217,51 @@
     });
   });
 
+  const FIELDS = ["org", "role", "name", "subject", "phone", "mobile", "address", "zip"];
+  const editor = $("#editor");
+  const editorForm = $("#editorForm");
+  let editing = null;
+
+  function openEditor(person) {
+    editing = person || null;
+    $("#editorTitle").textContent = person ? "정보 수정" : "새 사람 추가";
+    FIELDS.forEach((f) => {
+      editorForm.elements[f].value = person ? person[f] || "" : "";
+    });
+    editor.showModal();
+    editorForm.elements.name.focus();
+  }
+
+  editorForm.addEventListener("submit", (event) => {
+    if (event.submitter && event.submitter.value !== "save") return;
+    const values = {};
+    FIELDS.forEach((f) => {
+      values[f] = editorForm.elements[f].value.trim();
+    });
+    if (!values.name) return;
+    if (editing) {
+      Object.assign(editing, values);
+    } else {
+      people.push(values);
+      fillSubjectList();
+      fillOrgList();
+    }
+    render();
+  });
+
   els.query.addEventListener("input", render);
+
+  $("#addBtn").addEventListener("click", () => {
+    if (!people.length && els.searchArea.hidden) return;
+    openEditor(null);
+  });
+
+  $("#exportBtn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(people, null, 1)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "staff.json";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
 })();
