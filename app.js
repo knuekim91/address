@@ -4,6 +4,7 @@
     subject: { placeholder: "과목을 입력하거나 목록에서 고르세요 (예: 수학)" },
     address: { placeholder: "주소의 일부를 입력하세요 (예: 수성구)" },
     phone: { placeholder: "전화번호를 입력하세요 (숫자만, 예: 5012)" },
+    org: { placeholder: "학교 또는 동우회 이름을 입력하세요 (예: 협성동우회)" },
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -15,8 +16,8 @@
     searchArea: $("#searchArea"),
     tabs: [...document.querySelectorAll(".tab")],
     query: $("#query"),
-    orgFilter: $("#orgFilter"),
     subjectList: $("#subjectList"),
+    orgList: $("#orgList"),
     count: $("#count"),
     results: $("#results"),
   };
@@ -45,6 +46,8 @@
         return normalize(person.subject).includes(normalize(q));
       case "address":
         return normalize(person.address).includes(normalize(q));
+      case "org":
+        return normalize(person.org).includes(normalize(q));
       case "phone": {
         const d = digitsOnly(q);
         if (!d) return false;
@@ -66,15 +69,15 @@
     );
   }
 
-  function fillOrgFilter() {
-    const orgs = [...new Set(people.map((p) => p.org).filter(Boolean))];
-    const options = orgs.map((org) => {
-      const opt = document.createElement("option");
-      opt.value = org;
-      opt.textContent = org;
-      return opt;
-    });
-    els.orgFilter.replaceChildren(new Option("전체 학교·동우회", ""), ...options);
+  function fillOrgList() {
+    const orgs = [...new Set(people.map((p) => p.org).filter(Boolean))].sort();
+    els.orgList.replaceChildren(
+      ...orgs.map((o) => {
+        const opt = document.createElement("option");
+        opt.value = o;
+        return opt;
+      })
+    );
   }
 
   function makeCard(person) {
@@ -119,16 +122,14 @@
 
   function render() {
     const q = els.query.value.trim();
-    const org = els.orgFilter.value;
-    const scope = org ? people.filter((p) => p.org === org) : people;
     els.results.replaceChildren();
 
     if (!q) {
-      els.count.textContent = scope.length + "명이 등록되어 있습니다.";
+      els.count.textContent = people.length + "명이 등록되어 있습니다.";
       return;
     }
 
-    const found = scope.filter((p) => matches(p, mode, q));
+    const found = people.filter((p) => matches(p, mode, q));
     els.count.textContent = "검색 결과 " + found.length + "명";
 
     if (found.length === 0) {
@@ -156,8 +157,9 @@
       tab.setAttribute("aria-selected", String(active));
     });
     els.query.placeholder = MODES[next].placeholder;
-    els.query.setAttribute("list", next === "subject" ? "subjectList" : "");
-    if (next !== "subject") els.query.removeAttribute("list");
+    const listId = { subject: "subjectList", org: "orgList" }[next];
+    if (listId) els.query.setAttribute("list", listId);
+    else els.query.removeAttribute("list");
     els.query.inputMode = next === "phone" ? "numeric" : "text";
     render();
   }
@@ -168,7 +170,7 @@
     }
     people = data.filter((p) => p && typeof p === "object");
     fillSubjectList();
-    fillOrgFilter();
+    fillOrgList();
     els.loader.hidden = true;
     els.searchArea.hidden = false;
     setMode(mode);
@@ -205,5 +207,4 @@
   });
 
   els.query.addEventListener("input", render);
-  els.orgFilter.addEventListener("change", render);
 })();

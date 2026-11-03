@@ -33,17 +33,13 @@
         <button class="tab" role="tab" data-mode="subject" aria-selected="false">과목</button>
         <button class="tab" role="tab" data-mode="address" aria-selected="false">주소</button>
         <button class="tab" role="tab" data-mode="phone" aria-selected="false">전화</button>
+        <button class="tab" role="tab" data-mode="org" aria-selected="false">학교</button>
       </nav>
 
       <div class="field">
         <input type="search" id="query" class="input" autocomplete="off" placeholder="이름을 입력하세요 (예: 홍길동)">
         <datalist id="subjectList"></datalist>
-      </div>
-
-      <div class="field">
-        <select id="orgFilter" class="input" aria-label="학교/동우회 선택">
-          <option value="">전체 학교·동우회</option>
-        </select>
+        <datalist id="orgList"></datalist>
       </div>
 
       <p class="count" id="count" aria-live="polite"></p>
