@@ -8,6 +8,7 @@
   --line: #e6e8ef;
   --radius-lg: 18px;
   --radius-md: 14px;
+  --grad: linear-gradient(135deg, #2962ef 0%, #8b5cf6 100%);
   color-scheme: light;
 }
 
@@ -39,7 +40,8 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: linear-gradient(180deg, #eaf1ff 0%, var(--bg) 45%);
+  background-color: var(--bg);
   color: var(--ink);
   font-family: "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
   line-height: 1.5;
@@ -51,6 +53,14 @@ body {
   padding: 40px 16px 64px;
 }
 
+.head {
+  background: var(--grad);
+  color: #ffffff;
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 30px rgba(41, 98, 239, 0.25);
+}
+
 .head h1 {
   margin: 0;
   font-size: 28px;
@@ -59,7 +69,7 @@ body {
 
 .sub {
   margin: 6px 0 0;
-  color: var(--sub);
+  color: rgba(255, 255, 255, 0.85);
   font-size: 15px;
 }
 
@@ -103,8 +113,8 @@ body {
 }
 
 .btn-primary {
-  background: var(--brand);
-  border-color: var(--brand);
+  background: var(--grad);
+  border-color: transparent;
   color: #ffffff;
 }
 
@@ -134,8 +144,8 @@ body {
 }
 
 .tab.is-active {
-  background: var(--brand);
-  border-color: var(--brand);
+  background: var(--grad);
+  border-color: transparent;
   color: #ffffff;
 }
 
@@ -175,12 +185,19 @@ body {
 .card {
   background: var(--card);
   border: 1px solid var(--line);
+  border-left: 4px solid var(--brand);
   border-radius: var(--radius-lg);
   padding: 20px 22px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   min-width: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(16, 32, 64, 0.12);
 }
 
 .card-name {
@@ -194,6 +211,10 @@ body {
 }
 
 .card-phone {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--brand-soft);
   font-size: 15px;
   font-weight: 500;
   color: var(--brand);
