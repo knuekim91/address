@@ -320,18 +320,39 @@ body {
   width: 420px;
   height: 420px;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.4;
-  animation: drift 18s ease-in-out infinite alternate;
+  filter: blur(60px);
+  opacity: 0.65;
+  animation: drift 9s ease-in-out infinite alternate;
 }
 
 .blobs span:nth-child(1) { background: #2962ef; top: -140px; left: -120px; }
-.blobs span:nth-child(2) { background: #8b5cf6; top: 35%; right: -170px; animation-duration: 22s; animation-delay: -6s; }
-.blobs span:nth-child(3) { background: #22c3ee; bottom: -170px; left: 30%; animation-duration: 26s; animation-delay: -12s; }
+.blobs span:nth-child(2) { background: #8b5cf6; top: 35%; right: -170px; animation-duration: 11s; animation-delay: -4s; }
+.blobs span:nth-child(3) { background: #22c3ee; bottom: -170px; left: 30%; animation-duration: 13s; animation-delay: -7s; }
 
 @keyframes drift {
-  from { transform: translate(0, 0) scale(1); }
-  to { transform: translate(80px, 60px) scale(1.15); }
+  from { transform: translate(0, 0) scale(1) rotate(0deg); }
+  to { transform: translate(160px, 120px) scale(1.3) rotate(90deg); }
+}
+
+@keyframes pop {
+  0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+  60% { opacity: 1; transform: translateY(-6px) scale(1.02); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes sweep {
+  from { left: -60%; }
+  to { left: 120%; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 8px 20px rgba(41, 98, 239, 0.3); }
+  50% { box-shadow: 0 8px 28px rgba(139, 92, 246, 0.6); }
+}
+
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
 }
 
 @keyframes rise {
@@ -345,8 +366,26 @@ body {
 }
 
 .head {
+  position: relative;
+  overflow: hidden;
   background-size: 200% 200%;
-  animation: shine 9s ease infinite, rise 0.6s ease backwards;
+  animation: shine 4s ease infinite, rise 0.6s ease backwards;
+}
+
+.head::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: sweep 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.head h1 {
+  animation: pop 0.9s cubic-bezier(0.2, 1.4, 0.4, 1) backwards;
 }
 
 .loader,
@@ -361,7 +400,7 @@ body {
 
 .tab:hover { transform: translateY(-2px); }
 .tab:active { transform: scale(0.96); }
-.tab.is-active { box-shadow: 0 8px 20px rgba(41, 98, 239, 0.3); }
+.tab.is-active { animation: glow 2.5s ease-in-out infinite; }
 
 .input {
   transition: box-shadow 0.25s ease, transform 0.25s ease;
@@ -381,13 +420,24 @@ body {
   box-shadow: 0 8px 18px rgba(16, 32, 64, 0.12);
 }
 
+.btn-primary {
+  background-size: 200% 200%;
+}
+
 .btn-primary:hover {
   box-shadow: 0 10px 22px rgba(41, 98, 239, 0.35);
+  animation: shine 2s ease infinite;
 }
 
 .card {
-  animation: rise 0.45s ease backwards;
-  animation-delay: calc(var(--i, 0) * 40ms);
+  animation: pop 0.7s cubic-bezier(0.2, 1.2, 0.4, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02) rotate(-0.4deg);
+  box-shadow: 0 18px 40px rgba(41, 98, 239, 0.25);
+  border-left-width: 6px;
 }
 
 .card-phone {
@@ -395,7 +445,7 @@ body {
   transition: transform 0.2s ease;
 }
 
-.card-phone:hover { transform: scale(1.05); }
+.card-phone:hover { animation: beat 0.9s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   *,
