@@ -151,7 +151,13 @@
       return;
     }
 
-    els.results.append(...found.slice(0, 200).map(makeCard));
+    els.results.append(
+      ...found.slice(0, 200).map((person, i) => {
+        const card = makeCard(person);
+        card.style.setProperty("--i", i);
+        return card;
+      })
+    );
     if (found.length > 200) {
       const more = document.createElement("p");
       more.className = "empty";
